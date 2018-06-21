@@ -1,0 +1,17 @@
+Package: NutrienTrackeR
+Type: Package
+Title: NutrienTrackeR: an R package for food-based assessment of dietary intake
+Version: 0.99.0
+Date: 2018-06-15
+Author: Andrea Rodriguez-Martinez, Rafael Ayala, Yacine Debbabi, Lara Selles Vidal
+Maintainer: Andrea Rodriguez-Martinez <andrea.rodriguez-martinez13@imperial.ac.uk>, Rafael Ayala <r.ayala14@imperial.ac.uk>
+Description: NutrienTrackeR is a collection of tools to estimate the nutrient intake of an individual or a group of individuals (e.g. obese or diabetic subjects). It uses food composition data from several reference databases, including: USDA (US), CIQUAL (France), and BEDCA (Spain). NutrienTrackeR calculates the intake levels for both macronutrient and micronutrients, and compares them with the recommended dietary allowances (RDA). It includes a number of visualization tools, such as time series plots of nutrient intake, and pie-charts showing the main foods contributing to the intake level of a given nutrient. 
+License: CC BY-NC-ND 4.0
+Depends: R(>= 3.5)
+Suggests: RUnit, BiocGenerics, knitr, BiocStyle, rmarkdown
+VignetteBuilder: knitr
+Imports: ggplot2
+biocViews: BiomedicalInformatics
+NeedsCompilation: no
+LazyData: true
+Encoding: UTF-8

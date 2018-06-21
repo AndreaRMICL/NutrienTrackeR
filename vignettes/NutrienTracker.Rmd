@@ -1,0 +1,175 @@
+---
+bibliography: knitcitations.bib
+csl: template.csl
+css: mystyle.css
+output: 
+  BiocStyle::html_document
+vignette: |
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteIndexEntry{NutrienTrackeR} 
+  \usepackage[utf8]{inputenc}
+---
+
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(message=FALSE, fig.path='figures/')
+```
+
+<!-- Title block --> 
+<br>
+<p style="text-align:center;font-size:200%;color:Red"> NutrienTrackeR </p>
+<p style="text-align:center;font-size:100%;color:Gray"> Andrea Rodriguez Martinez,
+Rafael Ayala, Yacine Debbabi, Lara Selles Vidal </p>
+<p style="text-align:center;font-size:100%;color:Gray"> Jun 16, 2018 </p>
+<br>
+
+# Introduction
+
+<p style="font-size:110%"> <b>Motivation:</b> Diet and nutrition play a key role in the 
+development, prevention and treatment of noncommunicable diseases (NCD), such as type 2
+diabetes, obesity or cardiovascular diseases [@lachat2013]. For example, inadequate intake 
+of fruits and vegetables contributes to 2.7 million NCD-related  deaths per year[@hall2009]. 
+Food and nutrient databases provide the basic infrastructure for the assessment of 
+diet quality and for the development of food-based dietary guidelines [@ahuja2012;
+@elmadfa2010]. </p>
+
+<p style="font-size:110%"> <b>NutrienTrackeR</b> is a tool set for food information and 
+dietary assessment. It uses food composition data from several reference databases, 
+including: USDA (US), CIQUAL (France), and BEDCA (Spain). <b>NutrienTrackeR</b> calculates
+the intake levels for both macronutrients and micronutrients, and compares them 
+with the recommended dietary allowances. It also includes a number of visualization 
+tools, such as time series plots of nutrient intake, or pie-charts showing the main foods
+contributing to the intake levels of a given nutrient. <br><br> </p>
+
+# Installation instructions
+
+<p style="font-size:110%"> Before installing <b>NutrienTrackeR</b>, please make sure you 
+have the latest version of R and Bioconductor installed. To install <b>NutrienTrackeR</b>, 
+start R and enter: <br><p>
+
+```{r tidy = TRUE, eval = FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite("NutrienTrackeR")
+```
+<p style="font-size:110%"> Once installed, the package can be loaded as shown below: <br><p>
+```{r tidy = TRUE, eval = TRUE}
+library(NutrienTrackeR)
+```
+ <br>
+
+# Food composition datasets
+<p style="font-size:110%"> <b>NutrienTrackeR</b> includes three different food composition
+tables, which provide information on the average nutritional value of foods consumed
+in the United States (USDA standard reference database), France (CIQUAL database) and
+Spain (BEDCA database). All nutritional values are provided per 100 grams of food. <br><p>
+
+```{r tidy = TRUE}
+# USDA dataset
+USDA_dataset <- food_composition_data$USDA
+
+# CIQUAL dataset
+CIQUAL_dataset <- food_composition_data$CIQUAL
+
+# BEDCA dataset
+BEDCA_dataset <- food_composition_data$BEDCA
+```
+
+<p style="font-size:110%"> <b>NutrienTrackeR</b> includes a series of functionalities
+to facilitate the manipulation of these datasets. For example, the function 
+<b>getNutrientNames()</b> gets the names of all the nutrients included in a given 
+food composition table. <br><p>
+
+```{r tidy = TRUE}
+# Get nutrients included in the USDA dataset
+nutrients_USDA <- getNutrientNames(food_database = "USDA")
+print(head(nutrients_USDA), 4)
+```
+<p style="font-size:110%"> The function <b>subsetFoodRichIn()</b> selects the foods with
+the highest content of a nutrient of interest. <br><p>
+
+```{r tidy = TRUE, tidy.opts=list(indent = 2, width.cutoff = 150)}
+# Top 2 high-protein CIQUAL foods
+subsetFoodRichIn(nutrient_name = "Protein (g)", food_database = "CIQUAL", n = 2)[, "food_name"]
+
+# Top 3 high-protein BEDCA foods within "Fruits and fruit products"
+subsetFoodRichIn(nutrient_name = "Protein (g)", food_database = "BEDCA", food_group = "Fruits and fruit products", n = 3)[, "food_name"]
+
+```
+
+<p style="font-size:110%"> The function <b>findFoodName()</b> searches for food names 
+based on query keywords. <br><p>
+```{r tidy = TRUE, tidy.opts=list(indent = 2, width.cutoff = 150)}
+# Find the USDA food name "Tomatoes, green, raw"
+findFoodName(keywords = c("Tomato", "raw"), food_database = "USDA")
+```
+<br><p>
+
+# Dietary assessment tools
+
+## Preparing the input
+<p style="font-size:110%"> <b>NutrienTrackeR</b> allows assessing the dietary intake 
+of an individual, based on the food composition database of choice (i.e. USDA, 
+CIQUAL or BEDCA). For this, the user needs to provide a matrix or a list of matrices, 
+where each matrix reports all the foods eaten in a given day. The matrix must have 
+two columns: 1) "food", reporting food names; and 2) "units", reporting 
+the number of units eaten (1 unit = 100 grams of food). The dataset <b>sample_diet_USDA</b>
+is an example of a one-week diet, using foods from the USDA database.<br><p>
+```{r tidy = TRUE, tidy.opts=list(indent = 2, width.cutoff = 150)}
+# Foods eaten in day 1
+head(sample_diet_USDA[[1]])
+```
+<br><p>
+
+## Nutrient calculator
+<p style="font-size:110%"> The function <b>dietBalance()</b> calculates the daily nutrient
+intake of an individual and compares it with the NIH recommendations (recommended 
+dietary allowances (RDA) and tolerable upper intake levels (TUIL)). The nutrient 
+requirements are dependent on age and gender, and therefore these parameters
+need to be specified when using the function <b>dietBalance()</b>. In this example, 
+we will calculate the nutrient intake from the dataset <b>sample_diet_USDA</b>, assuming
+that this data was provided by a 27-year old women. <br><p>
+```{r tidy = TRUE, tidy.opts=list(indent = 2, width.cutoff = 50), message = TRUE}
+# Calculate nutrient intake
+daily_intake <- dietBalance(my_daily_food = sample_diet_USDA, food_database = "USDA", 
+                           age = 27, gender = "female")
+```
+<br><p>
+
+## Visualization tools
+<p style="font-size:110%"> The output of <b>dietBalance()</b> can be visualized 
+with several functions. For instance, <b>nutrientIntakePlot()</b> generates a 
+barplot of nutrient intake levels.<br><p>
+```{r tidy = TRUE, results='asis', fig.pos = "center"}
+nutrientIntakePlot(daily_intake)
+```
+<br><p>
+<p style="font-size:110%"> The function <b>nutrientPiePlot()</b> generates a pie-chart
+showing the relative contribution of each food to the total intake of a given nutrient.<br><p>
+```{r tidy = TRUE, tidy.opts=list(indent = 2, width.cutoff = 180), results='asis', fig.pos = "center",  fig.width = 20, fig.height = 10}
+#Load ggplott2
+library(ggplot2)
+
+## Generate plot
+q <- nutrientPiePlot(daily_intake, nutrient_name = "Magnesium, Mg (mg)")
+
+## Adjust font size
+q + theme(axis.title = element_text(size = 29), axis.text = element_text(size = 29), legend.title = element_text(size = 22),legend.text = element_text(size = 20))
+```
+<p style="font-size:110%"> The function <b>nutrientsTimeTrend()</b> allows visualizing 
+time trends of nutrient intake levels.<br><p>
+```{r tidy = TRUE, tidy.opts=list(indent = 2, width.cutoff = 180), results='asis', fig.pos = "center",  fig.width = 12, fig.height = 6}
+# Generate plot
+p <- nutrientsTimeTrend(my_daily_food = sample_diet_USDA, food_database = "USDA", 
+                        nutrients = c("Calcium, Ca (mg)", "Iron, Fe (mg)"))
+
+# Adjust font size
+p + theme(axis.title = element_text(size = 18), axis.text = element_text(size = 16), legend.title = element_text(size = 18),legend.text = element_text(size = 18))
+```
+<br><p>
+
+  
+# References
+
+
+
+
