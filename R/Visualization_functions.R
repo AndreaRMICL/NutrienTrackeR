@@ -1,3 +1,5 @@
+globalVariables(c("nutrient", "proportion", "group", "food", "day"))
+
 ## nutrientPiePlot ##
 nutrientPiePlot = function(daily_intake,
                            nutrient_name = "Vitamin B-12 (ug)", n = 10) {

@@ -1,3 +1,5 @@
+globalVariables(c("food_composition_data", "NIH_nutrient_recommendations", "nutrient_group"))
+
 ## dietBalance ##
 dietBalance = function(my_daily_food, food_database = "USDA",
                        age = 27, gender = "female", pregnant = FALSE,

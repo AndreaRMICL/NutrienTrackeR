@@ -3,7 +3,11 @@ bibliography: knitcitations.bib
 csl: template.csl
 css: mystyle.css
 output: 
-  BiocStyle::html_document
+  if (requireNamespace("BiocStyle", quietly = TRUE) & (Sys.info()[['sysname']] != "Windows")) {
+    BiocStyle::html_document
+  } else if (requireNamespace("rmarkdown", quietly = TRUE)) {
+    rmarkdown::html_document
+  } else html_document
 vignette: |
   %\VignetteEngine{knitr::rmarkdown} 
   %\VignetteIndexEntry{NutrienTrackeR} 
@@ -44,12 +48,11 @@ contributing to the intake levels of a given nutrient. <br><br> </p>
 # Installation instructions
 
 <p style="font-size:110%"> Before installing <b>NutrienTrackeR</b>, please make sure you 
-have the latest version of R and Bioconductor installed. To install <b>NutrienTrackeR</b>, 
+have the latest version of R is installed. To install <b>NutrienTrackeR</b>, 
 start R and enter: <br><p>
 
 ```{r tidy = TRUE, eval = FALSE}
-source("http://bioconductor.org/biocLite.R")
-biocLite("NutrienTrackeR")
+install.packages("NutrienTrackeR")
 ```
 <p style="font-size:110%"> Once installed, the package can be loaded as shown below: <br><p>
 ```{r tidy = TRUE, eval = TRUE}
