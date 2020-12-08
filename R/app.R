@@ -1,9 +1,18 @@
 NutrienTrackeRapp <- function(...) {
   ui <- fluidPage(
-    foodSearchUI("foodSearch1")
+    titlePanel("NutrienTrackeR"),
+    fluidRow(
+      selectDatabaseUI("selectDatabase1"), 
+      foodSearchUI("foodSearch1")
+    ),
+      dietInputUI("dietInput1")
   )
   server <- function(input, output, session) {
-    foodSearchServer("foodSearch1")
+    foodDatabase <- selectDatabaseServer("selectDatabase1")
+    dailyDiets <- dietInputServer("dietInputServer1")
+    foodSearchServer("foodSearch1", foodDatabase)
+    dietInputServer("dietInput1")
+    #nutrientIntakeRequirementServer("nutrientsIntakeRequirement1", dailyDiets)
   }
   shinyApp(ui, server, ...)
 }

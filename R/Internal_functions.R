@@ -52,3 +52,12 @@ bind_day = function(data, day) {
   return(cbind(data$diff_intake, day = day))
 }
 
+## parse_input_day_diet ##
+parse_input_day_diet = function(data) {
+  foods_split <- unlist(strsplit(data, split="\n"))
+  foods_amounts_split <- strsplit(unlist(strsplit(data, "\n")), split=";")
+  food_names <- trimws(sapply(foods_amounts_split, `[[`, 1, simplify=TRUE))
+  food_amounts <- as.character(as.numeric(trimws(sapply(foods_amounts_split, `[[`, 2, simplify=TRUE)))/100)
+  daily_diet_matrix <- matrix(c(food_names, food_amounts), ncol=2)
+  return(daily_diet_matrix)
+}
