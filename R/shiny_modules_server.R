@@ -53,9 +53,25 @@ dietInputServer <- function(id) {
 
 nutrientIntakeRequirementServer <- function(id, dietAnalysis, foodDatabase) {
   moduleServer(id, function(input, output, session) {
-    #diet_balance <- reactive(dietBalance(parsedDietInput(), food_database=foodDatabase(), age=27, gender="female"))
     output$intakePlot <- renderPlot({
       nutrientIntakePlot(dietAnalysis())
+    })
+  })
+}
+
+nutrientSourcesServer <- function(id, dietAnalysis, foodDatabase) {
+  moduleServer(id, function(input, output, session) {
+    databaseNutrients <- reactive({
+      getNutrientNames(foodDatabase())
+    })
+    output$targetNutrientSelection <- renderUI({
+      selectInput(
+        "targetNutrient", 
+        "Select a nutrient:", 
+        databaseNutrients())
+    })
+    output$nutrientSourcesPlot <- renderPlot({
+      nutrientPiePlot(dietAnalysis(), input$targetNutrient, 10)
     })
   })
 }

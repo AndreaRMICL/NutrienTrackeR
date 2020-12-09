@@ -20,17 +20,12 @@ personalDataUI <- function(id) {
       NS(id, "gender"),
       "Gender:",
       genders,
-      selected = "Male",
-      multiple = FALSE,
-      selectize = TRUE,
-      width = NULL,
-      size = NULL
+      selected = "Male"
     ),
     textInput(
       NS(id, "age"),
       "Age:",
-      "",
-      width = NULL
+      "30"
     )
   )
 }
@@ -55,5 +50,10 @@ dietInputUI <- function(id) {
 }
 
 nutrientsIntakeRequirementUI <- function(id) {
- column(8, plotOutput(NS(id, "intakePlot")))
+ plotOutput(NS(id, "intakePlot"))
+}
+
+nutrientSourcesUI <- function(id) {
+  fluidRow(column(3, uiOutput(NS(id, "targetNutrientSelection"))),
+           column(9, plotOutput(NS(id, "nutrientSourcesPlot"))))
 }

@@ -10,7 +10,8 @@ NutrienTrackeRapp <- function(...) {
         tabsetPanel(
           tabPanel("Food searches", foodSearchUI("foodSearch1")),
           tabPanel("Diet input", dietInputUI("dietInput1")),
-          tabPanel("Nutrient intake assessment", nutrientsIntakeRequirementUI("nutrientsIntakeRequirement1"))
+          tabPanel("Nutrient intake assessment", nutrientsIntakeRequirementUI("nutrientsIntakeRequirement1")),
+          tabPanel("Nutrient sources assessment", nutrientSourcesUI("nutrientSources1"))
         )
       )
     )
@@ -20,10 +21,15 @@ NutrienTrackeRapp <- function(...) {
     dailyDiets <- dietInputServer("dietInput1")
     personalData <- personalDataServer("personalData1")
     dietAnalysis <- reactive({
-      dietBalance(dailyDiets(), food_database=foodDatabase(), age=as.numeric(personalData()[[2]]), gender=personalData()[[1]])
+      dietBalance(dailyDiets(), food_database=foodDatabase(), 
+                  age=as.numeric(personalData()[[2]]), gender=personalData()[[1]])
+    })
+    databaseNutrients <- reactive({
+      getNutrientNames(foodDatabase())
     })
     foodSearchServer("foodSearch1", foodDatabase)
     nutrientIntakeRequirementServer("nutrientsIntakeRequirement1", dietAnalysis, foodDatabase)
+    nutrientSourcesServer("nutrientSources1", dietAnalysis, foodDatabase)
   }
   shinyApp(ui, server, ...)
 }
