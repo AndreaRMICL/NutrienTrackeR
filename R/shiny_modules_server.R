@@ -4,6 +4,12 @@ selectDatabaseServer <- function(id) {
   })
 }
 
+personalDataServer <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    reactive(list(input$gender, input$age))
+  })
+}
+
 foodSearchServer <- function(id, foodDatabase) {
   moduleServer(id, function(input, output, session) {
     foodSearchResults <- reactive({
@@ -45,11 +51,11 @@ dietInputServer <- function(id) {
   })
 }
 
-nutrientIntakeRequirementServer <- function(id, parsedDietInput, foodDatabase) {
+nutrientIntakeRequirementServer <- function(id, dietAnalysis, foodDatabase) {
   moduleServer(id, function(input, output, session) {
-    diet_balance <- reactive(dietBalance(parsedDietInput(), food_database=foodDatabase(), age=27, gender="female"))
+    #diet_balance <- reactive(dietBalance(parsedDietInput(), food_database=foodDatabase(), age=27, gender="female"))
     output$intakePlot <- renderPlot({
-      nutrientIntakePlot(diet_balance())
+      nutrientIntakePlot(dietAnalysis())
     })
   })
 }
