@@ -26,16 +26,9 @@ dietInputUI <- function(id) {
     fluidRow(
       column(3, textAreaInput(NS(id, "food_day5"), "Diet for day 5", NULL)),
       column(3, textAreaInput(NS(id, "food_day6"), "Diet for day 6", NULL)),
-      column(3, textAreaInput(NS(id, "food_day7"), "Diet for day 7", NULL))),
-    fluidRow(
-      column(12, verbatimTextOutput(NS(id, "dailyDiets")))
-    ))
+      column(3, textAreaInput(NS(id, "food_day7"), "Diet for day 7", NULL))))
 }
 
-# nutrientsIntakeRequirementUI <- function(id) {
-#   column(8, plotOutput(NS(id, "intakePlot")))
-# }
-
-debugUI <- function(id) {
-       column(12, textOutput(NS(id, "dailyDiets")))
+nutrientsIntakeRequirementUI <- function(id) {
+ column(8, plotOutput(NS(id, "intakePlot")))
 }

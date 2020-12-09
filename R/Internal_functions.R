@@ -59,5 +59,6 @@ parse_input_day_diet = function(data) {
   food_names <- trimws(sapply(foods_amounts_split, `[[`, 1, simplify=TRUE))
   food_amounts <- as.character(as.numeric(trimws(sapply(foods_amounts_split, `[[`, 2, simplify=TRUE)))/100)
   daily_diet_matrix <- matrix(c(food_names, food_amounts), ncol=2)
+  colnames(daily_diet_matrix) <- c("Food", "Units (100 g)")
   return(daily_diet_matrix)
 }

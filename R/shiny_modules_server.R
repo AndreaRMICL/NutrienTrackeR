@@ -28,24 +28,26 @@ foodSearchServer <- function(id, foodDatabase) {
 
 dietInputServer <- function(id) {
   moduleServer(id, function(input, output, session) {
-    parsed_daily_diets <- reactive({lapply(list(input$food_day1,
-                                                input$food_day2,
-                                                input$food_day3,
-                                                input$food_day4,
-                                                input$food_day5,
-                                                input$food_day6,
-                                                input$food_day7),
-                                           parse_input_day_diet)
-      #parsed_daily_diets <- parsed_daily_diets[lengths(parsed_daily_diets) != 0]
-      #if(length(parsed_daily_diets) == 1) parsed_daily_diets <- parsed_daily_diets[[1]]
+    reactive({
+      parsed_daily_diets <- lapply(list(input$food_day1,
+                  input$food_day2,
+                  input$food_day3,
+                  input$food_day4,
+                  input$food_day5,
+                  input$food_day6,
+                  input$food_day7),
+             parse_input_day_diet)
+      names(parsed_daily_diets) <- c("Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7")
+      parsed_daily_diets <- parsed_daily_diets[lengths(parsed_daily_diets) != 0]
+      if(length(parsed_daily_diets) == 1) parsed_daily_diets <- parsed_daily_diets[[1]]
+      parsed_daily_diets
     })
-    output$dailyDiets <- renderPrint(print(parsed_daily_diets()))
   })
 }
 
-nutrientIntakeRequirementServer <- function(id, diet_balance) {
+nutrientIntakeRequirementServer <- function(id, parsedDietInput, foodDatabase) {
   moduleServer(id, function(input, output, session) {
-    diet_balance <- reactive(dietBalance(dailyDiets(), food_database="USDA", age=27, gender="female"))
+    diet_balance <- reactive(dietBalance(parsedDietInput(), food_database=foodDatabase(), age=27, gender="female"))
     output$intakePlot <- renderPlot({
       nutrientIntakePlot(diet_balance())
     })
