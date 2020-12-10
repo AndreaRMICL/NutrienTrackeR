@@ -26,7 +26,15 @@ personalDataUI <- function(id) {
       NS(id, "age"),
       "Age:",
       "30"
-    )
+    ),
+    conditionalPanel(condition="input.gender == 'female'",
+                     selectInput(
+                       NS(id, "extraStatus"),
+                       "Pregnancy/lactation status:",
+                       c("Pregnancy", "Lactation"),
+                       multiple = TRUE
+                     ),
+                     ns=NS(id))
   )
 }
 
@@ -54,10 +62,21 @@ nutrientsIntakeRequirementUI <- function(id) {
 }
 
 nutrientSourcesUI <- function(id) {
-  fluidRow(selectInput(
-    NS(id, "targetNutrientSelection"),
-    "Select nutrient:",
-    getNutrientNames("USDA")
-    ),
-  plotOutput(NS(id, "testNutrientOut")))
+  fluidRow(
+    column(3, 
+           fluidRow(
+             selectInput(
+               NS(id, "targetNutrientSelection"),
+               "Select nutrient:",
+               getNutrientNames("USDA")
+             ),
+             textInput(
+               NS(id, "maxFoods"),
+               "Maximum number of foods:",
+               value = "5"
+             )
+           )
+    ), 
+    column(9, 
+           plotOutput(NS(id, "sourcesPlot"))))
 }

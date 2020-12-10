@@ -25,7 +25,9 @@ NutrienTrackeRapp <- function(...) {
     personalData <- personalDataServer("personalData1")
     dietAnalysis <- reactive({
       dietBalance(dailyDiets(), food_database=foodDatabase(), 
-                  age=as.numeric(personalData()[[2]]), gender=personalData()[[1]])
+                  age=as.numeric(personalData()[[2]]), gender=personalData()[[1]],
+                  pregnant=personalData()[["pregnancyStatus"]],
+                  lactation=personalData()[["lactationStatus"]])
     })
     nutrientNames <- reactive({
       getNutrientNames(foodDatabase())

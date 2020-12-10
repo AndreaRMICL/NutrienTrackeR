@@ -1,12 +1,22 @@
 selectDatabaseServer <- function(id) {
   moduleServer(id, function(input, output, session) {
-    reactive(input$foodSearchDatabase)
+    reactive({
+      input$foodSearchDatabase
+    })
   })
 }
 
 personalDataServer <- function(id) {
   moduleServer(id, function(input, output, session) {
-    reactive(list(input$gender, input$age))
+    reactive({
+      validate(
+        need(input$gender %in% c("male", "female"), "Please select a gender"),
+        need(suppressWarnings(as.numeric(input$age) >= 0), "Please enter a valid age")
+      )
+      list(input$gender, input$age, 
+           pregnancyStatus={"Pregnancy" %in% input$extraStatus},
+           lactationStatus={"Lactation" %in% input$extraStatus})
+    })
   })
 }
 
@@ -46,6 +56,9 @@ dietInputServer <- function(id) {
       names(parsed_daily_diets) <- c("Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7")
       parsed_daily_diets <- parsed_daily_diets[lengths(parsed_daily_diets) != 0]
       if(length(parsed_daily_diets) == 1) parsed_daily_diets <- parsed_daily_diets[[1]]
+      validate(
+        need(length(parsed_daily_diets) > 0, "Please enter diet for at least 1 day")
+      )
       parsed_daily_diets
     })
   })
@@ -68,8 +81,8 @@ nutrientSourcesServer <- function(id, dietAnalysis, nutrientNames) {
         choices = nutrientNames()
       )
     })
-    output$testNutrientOut <- renderPlot({
-      nutrientPiePlot(dietAnalysis(), input$targetNutrientSelection, 2)
+    output$sourcesPlot <- renderPlot({
+      nutrientPiePlot(dietAnalysis(), input$targetNutrientSelection, as.numeric(input$maxFoods))
     })
     #reactive(input$targetNutrientSelection)
   })
