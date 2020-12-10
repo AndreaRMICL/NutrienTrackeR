@@ -59,19 +59,18 @@ nutrientIntakeRequirementServer <- function(id, dietAnalysis, foodDatabase) {
   })
 }
 
-nutrientSourcesServer <- function(id, dietAnalysis, foodDatabase) {
+nutrientSourcesServer <- function(id, dietAnalysis, nutrientNames) {
   moduleServer(id, function(input, output, session) {
-    databaseNutrients <- reactive({
-      getNutrientNames(foodDatabase())
+    observe({
+      updateSelectizeInput(
+        session,
+        "targetNutrientSelection",
+        choices = nutrientNames()
+      )
     })
-    output$targetNutrientSelection <- renderUI({
-      selectInput(
-        "targetNutrient", 
-        "Select a nutrient:", 
-        databaseNutrients())
+    output$testNutrientOut <- renderPlot({
+      nutrientPiePlot(dietAnalysis(), input$targetNutrientSelection, 2)
     })
-    output$nutrientSourcesPlot <- renderPlot({
-      nutrientPiePlot(dietAnalysis(), input$targetNutrient, 10)
-    })
+    #reactive(input$targetNutrientSelection)
   })
 }

@@ -54,6 +54,10 @@ nutrientsIntakeRequirementUI <- function(id) {
 }
 
 nutrientSourcesUI <- function(id) {
-  fluidRow(column(3, uiOutput(NS(id, "targetNutrientSelection"))),
-           column(9, plotOutput(NS(id, "nutrientSourcesPlot"))))
+  fluidRow(selectInput(
+    NS(id, "targetNutrientSelection"),
+    "Select nutrient:",
+    getNutrientNames("USDA")
+    ),
+  plotOutput(NS(id, "testNutrientOut")))
 }
