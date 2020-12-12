@@ -33,7 +33,7 @@ NutrienTrackeRapp <- function(...) {
       getNutrientNames(foodDatabase())
     })
     nutrientSourcesServer("selectNutrient1", dietAnalysis, nutrientNames)
-    foodSearchServer("foodSearch1", foodDatabase)
+    foodSearchServer("foodSearch1", foodDatabase, nutrientNames)
     nutrientIntakeRequirementServer("nutrientsIntakeRequirement1", dietAnalysis, foodDatabase)
     #nutrientSourcesServer("nutrientSources1", dietAnalysis, selectedNutrient)
   }

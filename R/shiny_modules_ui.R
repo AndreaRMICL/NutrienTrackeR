@@ -27,20 +27,39 @@ personalDataUI <- function(id) {
       "Age:",
       "30"
     ),
-    conditionalPanel(condition="input.gender == 'female'",
-                     selectInput(
-                       NS(id, "extraStatus"),
-                       "Pregnancy/lactation status:",
-                       c("Pregnancy", "Lactation"),
-                       multiple = TRUE
-                     ),
-                     ns=NS(id))
+    conditionalPanel(
+      condition="input.gender == 'female'",
+      selectInput(
+        NS(id, "extraStatus"),
+        "Pregnancy/lactation status:",
+        c("Pregnancy", "Lactation"),
+        multiple = TRUE
+      ),
+      ns=NS(id))
   )
 }
 
 foodSearchUI <- function(id) {
-  fluidRow(column(3, textInput(NS(id, "foodSearchQuery"), "Search for foods:", "")),
-       column(9, htmlOutput(NS(id, "foodMatches"), style = "height:30vh;overflow-y:auto")))
+  fluidRow(
+    column(3, 
+           fluidRow(textInput(
+             NS(id, "foodSearchQuery"), 
+             "Search for foods:", 
+             "")),
+           checkboxInput(
+             NS(id, "sortByNutrient"), 
+             "Sort foods by nutrient"),
+           conditionalPanel(
+             condition="input.sortByNutrient == 1",
+             selectInput(
+               NS(id, "sortingNutrient"), 
+               "Nutrient to sort by:",
+               getNutrientNames("USDA")),
+             ns = NS(id))),
+    column(9,
+           tableOutput(
+             NS(id, "foodMatches")),
+             style = "height:50vh;overflow-y:auto"))
 }
 
 dietInputUI <- function(id) {
@@ -49,16 +68,16 @@ dietInputUI <- function(id) {
     column(4, textAreaInput(NS(id, "food_day2"), "Diet for day 2", NULL)),
     column(4, textAreaInput(NS(id, "food_day3"), "Diet for day 3", NULL))),
     fluidRow(
-    column(4, textAreaInput(NS(id, "food_day4"), "Diet for day 4", NULL)),
-    column(4, textAreaInput(NS(id, "food_day5"), "Diet for day 5", NULL)),
-    column(4, textAreaInput(NS(id, "food_day6"), "Diet for day 6", NULL))),
+      column(4, textAreaInput(NS(id, "food_day4"), "Diet for day 4", NULL)),
+      column(4, textAreaInput(NS(id, "food_day5"), "Diet for day 5", NULL)),
+      column(4, textAreaInput(NS(id, "food_day6"), "Diet for day 6", NULL))),
     fluidRow(
       column(4, textAreaInput(NS(id, "food_day7"), "Diet for day 7", NULL)))
-    )
+  )
 }
 
 nutrientsIntakeRequirementUI <- function(id) {
- plotOutput(NS(id, "intakePlot"))
+  plotOutput(NS(id, "intakePlot"))
 }
 
 nutrientSourcesUI <- function(id) {

@@ -20,24 +20,32 @@ personalDataServer <- function(id) {
   })
 }
 
-foodSearchServer <- function(id, foodDatabase) {
+foodSearchServer <- function(id, foodDatabase, nutrientNames) {
   moduleServer(id, function(input, output, session) {
     foodSearchResults <- reactive({
       if(input$foodSearchQuery == "") {
-        NULL
+        get(foodDatabase(), food_composition_data)[,2]
       } else {
         findFoodName(keywords = trimws(unlist(strsplit(input$foodSearchQuery, split=";"))), 
                      food_database = foodDatabase(), ignore_case = TRUE)
       }
     })
-    output$foodMatches <- renderUI({
-      foodSearchResults_output <- foodSearchResults()
-      if(!is.null(foodSearchResults_output)) {
-        HTML(paste(c(if(foodSearchResults_output[1] != "Could not find any food with the current keywords") {
-          paste(length(foodSearchResults()), " results found:")}, foodSearchResults()), 
-          sep = "", collapse = '<br/>'))
-        
+    output$foodMatches <- renderTable({
+      foods_search_results = foodSearchResults()
+      if(input$sortByNutrient == TRUE & !is.null(input$sortingNutrient)) {
+        allFoodsSorted <- subsetFoodRichIn(input$sortingNutrient, 
+                                           n = nrow(get(foodDatabase(), food_composition_data)))
+        sorted_food_names <- allFoodsSorted[,2]
+        foods_search_results <- foods_search_results[order(match(foods_search_results, sorted_food_names))]
       }
+      data.frame("Found foods" = foods_search_results)
+      })
+    observe({
+      updateSelectizeInput(
+        session,
+        "sortingNutrient",
+        choices = nutrientNames()
+      )
     })
   })
 }
