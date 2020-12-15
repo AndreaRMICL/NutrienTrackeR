@@ -1,2 +1,7 @@
+Changes in version 1.0.0 (2020-12-14)
++ Added a shiny app
++ Now it is possible to plot macronutrients only with nutrientIntakePlot
++ Bug fixes for limit cases where only a single food is provided for a given day
+
 Changes in version 0.99.3 (2020-10-06)
 + Avoid BiocStyle output under Windows environments to prevent CRAN build failure

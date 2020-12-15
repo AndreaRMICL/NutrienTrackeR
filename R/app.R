@@ -1,4 +1,4 @@
-NutrienTrackeRapp <- function(...) {
+NutrienTrackeRapp <- function() {
   ui <- fluidPage(
     titlePanel("NutrienTrackeR"),
     sidebarLayout(
@@ -11,10 +11,11 @@ NutrienTrackeRapp <- function(...) {
           tabPanel("Food searches", foodSearchUI("foodSearch1")),
           tabPanel("Diet input", dietInputUI("dietInput1")),
           tabPanel("Nutrient intake assessment", nutrientsIntakeRequirementUI("nutrientsIntakeRequirement1")),
-          tabPanel("Nutrient sources assessment", nutrientSourcesUI("selectNutrient1"))
-                   # fluidRow(column(3, selectNutrientUI("selectNutrient1")),
-                   # column(9, nutrientSourcesUI("nutrientSources1")))
-                   # )
+          tabPanel("Nutrient sources assessment", nutrientSourcesUI("selectNutrient1")),
+          tabPanel("One-day diet fast assessment", fluidPage(
+            column(6, foodSelectionUI("foodSelection1")),
+            column(6, nutrientsIntakeRequirementUI("nutrientsIntakeRequirement2"))
+          ))
         )
       )
     )
@@ -33,9 +34,19 @@ NutrienTrackeRapp <- function(...) {
       getNutrientNames(foodDatabase())
     })
     nutrientSourcesServer("selectNutrient1", dietAnalysis, nutrientNames)
+    oneDayDiet <- foodSelectionServer("foodSelection1", foodDatabase)
+    dietAnalysisOneDay <- reactive({
+      dietBalance(oneDayDiet(), food_database=foodDatabase(), 
+                  age=as.numeric(personalData()[[2]]), gender=personalData()[[1]],
+                  pregnant=personalData()[["pregnancyStatus"]],
+                  lactation=personalData()[["lactationStatus"]])
+    })
     foodSearchServer("foodSearch1", foodDatabase, nutrientNames)
-    nutrientIntakeRequirementServer("nutrientsIntakeRequirement1", dietAnalysis, foodDatabase)
-    #nutrientSourcesServer("nutrientSources1", dietAnalysis, selectedNutrient)
+    nutrientIntakeRequirementServer("nutrientsIntakeRequirement1", 
+                                    dietAnalysis, foodDatabase)
+    nutrientIntakeRequirementServer("nutrientsIntakeRequirement2", 
+                                    dietAnalysisOneDay, foodDatabase, 
+                                    macronutrientsOnly = TRUE)
   }
-  shinyApp(ui, server, ...)
+  shinyApp(ui, server)
 }

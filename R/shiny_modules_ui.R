@@ -99,3 +99,34 @@ nutrientSourcesUI <- function(id) {
     column(9, 
            plotOutput(NS(id, "sourcesPlot"))))
 }
+
+foodSelectionUI <- function(id) {
+  tagList(
+    fluidRow(
+      selectizeInput(
+        NS(id, "eatenFood"),
+        "Select food:",
+        sort(food_composition_data$USDA[,2]),
+        multiple = TRUE,
+        options = list(maxOptions=99999, maxItems=1, plugins = list('restore_on_backspace'))
+      ),
+      textInput(
+        NS(id, "eatenGrams"),
+        "Enter amount in grams:"
+      )
+    ),
+    fluidRow(
+      actionButton(
+        NS(id, "addFood"),
+        "Add food to my diet"
+      ),
+      actionButton(
+        NS(id, "resetFoods"),
+        "Reset entered diet")
+    ),
+    fluidRow(
+      tableOutput(
+        NS(id, "inputDiet")),
+      style = "height:50vh;overflow-y:auto")
+  )
+}

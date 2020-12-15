@@ -22,7 +22,7 @@ nutrientPiePlot = function(daily_intake,
 
     nutrient_df = data.frame(food = names(nutrient_values),
                              proportion = as.numeric(nutrient_values))
-    nutrient_df$food = factor(nutrient_df$food, levels = rev(as.character(nutrient_df$food)))
+    nutrient_df$food = factor(nutrient_df$food, levels = unique(rev(as.character(nutrient_df$food))))
 
     bp =  ggplot(nutrient_df, aes(x = "", y = proportion, fill = food)) +
       geom_bar(width = 1, stat = "identity") + coord_polar(theta = "y") +
@@ -34,18 +34,30 @@ nutrientPiePlot = function(daily_intake,
 ################################################################################
 
 ## nutrientIntakePlot
-nutrientIntakePlot = function(daily_intake, color_scale = c("salmon", "cornflowerblue",
-                                                            "palegreen3")) {
+nutrientIntakePlot = function(daily_intake, 
+                              color_scale = c("salmon", "cornflowerblue", "palegreen3"),
+                              macronutrientsOnly = FALSE) {
     ## Color scale
     names(color_scale) = c("macronutrient", "mineral", "vitamin")
     color_scale = color_scale[intersect(unique(daily_intake$diff_intake[, "group"]), names(color_scale))]
     colnames(daily_intake$diff_intake)[[2]] = "proportion"
-
-    plot = ggplot(data=daily_intake$diff_intake, aes(x=nutrient, y=proportion, fill = group)) +
+    plot = ggplot(data=if(macronutrientsOnly) {
+      daily_intake$diff_intake[daily_intake$diff_intake[,"group"]=="macronutrient",]
+      } else {
+        daily_intake$diff_intake
+      }, aes(x=nutrient, y=proportion, fill = group)) +
            geom_bar(stat="identity") +
-           scale_x_discrete(limits = daily_intake$diff_intake[, "nutrient"]) +
+           scale_x_discrete(limits = if(macronutrientsOnly) {
+             daily_intake$diff_intake[daily_intake$diff_intake[,"group"]=="macronutrient", "nutrient"]
+             } else {
+               daily_intake$diff_intake[, "nutrient"]
+               }) +
            labs(x="Nutrient", y = "Intake/Requirement (%)") +
-           scale_fill_manual(values = color_scale) +
+           scale_fill_manual(values = if(macronutrientsOnly) {
+             color_scale[1]
+             } else {
+               color_scale
+             }) +
            theme_bw() +
            geom_hline(yintercept=100, linetype="dashed", color = "red", size=0.5) +
            theme(#axis.title.x=element_blank(),
@@ -53,7 +65,8 @@ nutrientIntakePlot = function(daily_intake, color_scale = c("salmon", "cornflowe
                  panel.grid.minor = element_blank(),
                  axis.text = element_text(size = 10),
                  axis.title = element_text(size = 10, vjust = 0),
-                 axis.text.x = element_text(angle=90, hjust = 1))
+                 axis.text.x = element_text(angle=90, hjust = 1),
+                 legend.position = if(macronutrientsOnly) "none" else "right")
 
     return(plot)
 }

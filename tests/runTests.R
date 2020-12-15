@@ -1,1 +1,1 @@
-BiocGenerics:::testPackage("MWASTools")
+BiocGenerics:::testPackage("NutrienTrackeR")

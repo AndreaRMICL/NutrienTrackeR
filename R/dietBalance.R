@@ -30,7 +30,14 @@ dietBalance = function(my_daily_food, food_database = "USDA",
     common_nutrients2 = intersect(colnames(nutrient_requirements), colnames(nutrient_upperlevels))
     nutrient_upperlevels = (nutrient_upperlevels[, common_nutrients2]/nutrient_requirements[, common_nutrients2])*100
 
-    ## Daily_food must be a list or matrix
+    ## Daily_food must be a list or matrix, but a character vector of length 2 
+    ## will also be accepted and converted to a 1-row matrix
+    if (is.character(my_daily_food) &
+        is.vector(my_daily_food) &
+        length(my_daily_food) == 2) {
+        my_daily_food = matrix(my_daily_food, ncol=2)
+        colnames(my_daily_food) = c("food", "units")
+    } 
     if (!is.list(my_daily_food) & !is.matrix(my_daily_food)) {
         stop("daily_food must be a list or a matrix")
     }
@@ -69,7 +76,8 @@ dietBalance = function(my_daily_food, food_database = "USDA",
 
     ## Get daily intake level of nutrients
     my_food = food_composition[food_eaten, ]*units_eaten
-    total_intake = round(colSums(my_food), 3)
+    total_intake = if(is.matrix(my_food)) round(colSums(my_food), 3) else round(my_food, 3) 
+#    total_intake = round(colSums(my_food), 3)
     my_food = rbind(my_food, "Total intake" = total_intake)
     food_contribution = t(t(my_food) / total_intake) * 100
     my_requirements = nutrient_requirements[group, ]

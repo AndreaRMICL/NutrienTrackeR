@@ -7,13 +7,16 @@ generated with the function dietBalance().
 }
 \usage{
 nutrientIntakePlot(daily_intake, color_scale = c("salmon", "cornflowerblue",
-                   "palegreen3"))
+                   "palegreen3"), macronutrientsOnly = FALSE)
 }
 \arguments{
   \item{daily_intake}{list generated with the function dietBalance().}
   \item{color_scale}{character vector indicating the colors used to fill the bars,
   according to nutrient groups: macronutrient (first color), mineral (second color),
   vitamin (third color).}
+  \item{macronutrientsOnly}{logical indicating if only macronutrients should be
+  plotted. In the default behaviour, \code{macronutrientsOnly = FALSE} and all
+  nutrients will be plotted, including minerals and vitamins.}
 }
 \value{
 A barplot of nutrient intake levels, expressed as a percentage of RDA.
