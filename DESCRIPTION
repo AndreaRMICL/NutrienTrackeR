@@ -4,10 +4,10 @@ Title: Food Composition Information and Dietary Assessment
 Version: 1.1.0
 Date: 2021-03-13
 Author: Andrea Rodriguez-Martinez, Rafael Ayala, Mark Balchunas, Yacine Debbabi, Lara Selles Vidal
-Maintainer: Rafael Ayala <r.ayala14@imperial.ac.uk>
+Maintainer: Rafael Ayala <rafael.ayala@oist.jp>
 Contact: Andrea Rodriguez-Martinez
         <andrea.rodriguez-martinez13@imperial.ac.uk>, Rafael Ayala
-        <r.ayala14@imperial.ac.uk>
+        <rafael.ayala@oist.jp>
 Description: Provides a tool set for food information and dietary assessment. It 
     uses food composition data from several reference databases, including: 'USDA' (United States), 
     'CIQUAL' (France), and 'BEDCA' (Spain). 'NutrienTrackeR' calculates the intake levels for both 
