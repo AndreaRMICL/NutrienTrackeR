@@ -4,7 +4,6 @@ globalVariables(c("food_composition_data", "NIH_nutrient_recommendations", "nutr
 dietBalance = function(my_daily_food, food_database = "USDA",
                        age = 27, gender = "female", pregnant = FALSE,
                        lactation = FALSE, summary_report = TRUE) {
-
     ## Check food_database
     if (!(food_database %in% names(food_composition_data))) {
         stop ("Invalid food_database")

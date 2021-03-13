@@ -1,3 +1,9 @@
+Changes in version 1.1.0 (2021-03-13)
++ Entire food lists can be navigated through the app
++ Redesigned diet input tab in the app to be more detailed
++ Now diet can be input for an arbitrary number of dates, and time of meals can be specified
++ The app accepts multiple units for consumed foods (tablespoons, cups, etc.)
+
 Changes in version 1.0.0 (2020-12-14)
 + Added a shiny app
 + Now it is possible to plot macronutrients only with nutrientIntakePlot

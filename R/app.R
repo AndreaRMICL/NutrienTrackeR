@@ -9,6 +9,7 @@ NutrienTrackeRapp <- function() {
       mainPanel(
         tabsetPanel(
           tabPanel("Food searches", foodSearchUI("foodSearch1")),
+          tabPanel("Food lists", foodListsUI("foodLists1")),
           tabPanel("Diet input", dietInputUI("dietInput1")),
           tabPanel("Nutrient intake assessment", nutrientsIntakeRequirementUI("nutrientsIntakeRequirement1")),
           tabPanel("Nutrient sources assessment", nutrientSourcesUI("selectNutrient1")),
@@ -22,7 +23,6 @@ NutrienTrackeRapp <- function() {
   )
   server <- function(input, output, session) {
     foodDatabase <- selectDatabaseServer("selectDatabase1")
-    dailyDiets <- dietInputServer("dietInput1")
     personalData <- personalDataServer("personalData1")
     dietAnalysis <- reactive({
       dietBalance(dailyDiets(), food_database=foodDatabase(), 
@@ -33,6 +33,8 @@ NutrienTrackeRapp <- function() {
     nutrientNames <- reactive({
       getNutrientNames(foodDatabase())
     })
+    dailyDiets <- dietInputServer("dietInput1", foodDatabase)
+    foodListsServer("foodLists1", foodDatabase, nutrientNames)
     nutrientSourcesServer("selectNutrient1", dietAnalysis, nutrientNames)
     oneDayDiet <- foodSelectionServer("foodSelection1", foodDatabase)
     dietAnalysisOneDay <- reactive({
