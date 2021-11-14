@@ -30,7 +30,7 @@ getFoodGroups = function(food_database = "USDA") {
 
 ## findFooodName ##
 findFoodName = function(keywords, food_database = "USDA", food_group = NULL,
-                        ignore_case = FALSE) {
+                        ignore_case = TRUE) {
 
     ## Check food_database
     if (!(food_database %in% names(food_composition_data))) {

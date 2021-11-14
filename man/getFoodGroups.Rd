@@ -10,7 +10,7 @@ getFoodGroups(food_database = "USDA")
 }
 \arguments{
   \item{food_database}{character vector indicating the food database to be used. 
-  Possible values are: "USDA", "CIQUAL", "BEDCA".}
+  Possible values are: "USDA", "CIQUAL", "BEDCA", "CNF".}
 }
 \value{
 A vector of food groups. 
@@ -27,4 +27,7 @@ getFoodGroups("CIQUAL")
 
 ## Get food groups from BEDCA
 getFoodGroups("BEDCA")
+
+## Get food groups from CNF
+getFoodGroups("CNF")
 }

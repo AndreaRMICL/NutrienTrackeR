@@ -2,7 +2,7 @@ selectDatabaseUI <- function(id) {
     selectInput(
         NS(id, "foodSearchDatabase"),
         "Food database to be used:",
-        c("USDA", "CIQUAL", "BEDCA"),
+        c("USDA", "CIQUAL", "BEDCA", "CNF"),
         selected = "USDA",
         multiple = FALSE,
         selectize = TRUE,

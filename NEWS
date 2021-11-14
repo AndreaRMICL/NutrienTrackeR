@@ -1,3 +1,7 @@
+Changes in version 1.2.0 (2021-11-14)
++ Added the CNF database from Canada to the available databases
++ Now findFoodName ignores case by default
+
 Changes in version 1.1.0 (2021-03-13)
 + Entire food lists can be navigated through the app
 + Redesigned diet input tab in the app to be more detailed

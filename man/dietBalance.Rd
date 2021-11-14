@@ -16,7 +16,7 @@ dietBalance(my_daily_food, food_database = "USDA", age = 27, gender = "female",
   2) "units" (reporting the number of units relative to 100 grams, e.g. 125 g -> 1.25).
   For more details, see the dataset "sample_diet_USDA".}
   \item{food_database}{character vector indicating the food database to be used.
-  Possible values are: "USDA", "CIQUAL", "BEDCA".}
+  Possible values are: "USDA", "CIQUAL", "BEDCA", "CNF".}
   \item{age}{numeric vector indicating age.}
   \item{gender}{character vector indicating gender (i.e. "female" or "male").}
   \item{pregnant}{logical constant indicating pregnancy status.}

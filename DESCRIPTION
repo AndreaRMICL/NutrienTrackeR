@@ -1,8 +1,8 @@
 Package: NutrienTrackeR
 Type: Package
 Title: Food Composition Information and Dietary Assessment
-Version: 1.1.0
-Date: 2021-03-13
+Version: 1.2.0
+Date: 2021-11-14
 Author: Andrea Rodriguez-Martinez, Rafael Ayala, Mark Balchunas, Yacine Debbabi, Lara Selles Vidal
 Maintainer: Rafael Ayala <rafael.ayala@oist.jp>
 Contact: Andrea Rodriguez-Martinez
@@ -10,11 +10,12 @@ Contact: Andrea Rodriguez-Martinez
         <rafael.ayala@oist.jp>
 Description: Provides a tool set for food information and dietary assessment. It 
     uses food composition data from several reference databases, including: 'USDA' (United States), 
-    'CIQUAL' (France), and 'BEDCA' (Spain). 'NutrienTrackeR' calculates the intake levels for both 
-    macronutrient and micronutrients, and compares them with the recommended dietary allowances (RDA). 
-    It includes a number of visualization tools, such as time series plots of nutrient intake, 
-    and pie-charts showing the main foods contributing to the intake level of a given nutrient.
-    A shiny app exposing the main functionalities of the package is also provided.
+    'CIQUAL' (France), 'BEDCA' (Spain) and 'CNF' (Canada). 'NutrienTrackeR' calculates the intake 
+    levels for both macronutrient and micronutrients, and compares them with the recommended 
+    dietary allowances (RDA). It includes a number of visualization tools, such as time series 
+    plots of nutrient intake, and pie-charts showing the main foods contributing to the intake 
+    level of a given nutrient. A shiny app exposing the main functionalities of the package is also 
+    provided.
 License: GPL-3
 Depends: R(>= 3.5)
 Suggests: RUnit, knitr, BiocStyle, rmarkdown, BiocGenerics
