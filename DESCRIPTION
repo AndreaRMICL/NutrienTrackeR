@@ -1,9 +1,9 @@
 Package: NutrienTrackeR
 Type: Package
 Title: Food Composition Information and Dietary Assessment
-Version: 1.2.0
-Date: 2021-11-14
-Author: Andrea Rodriguez-Martinez, Rafael Ayala, Mark Balchunas, Yacine Debbabi, Lara Selles Vidal
+Version: 1.3.0
+Date: 2023-06-30
+Author: Andrea Rodriguez-Martinez, Rafael Ayala, Mark Balchunas, Yacine Debbabi, Daniel Gutiérrez-Del-Río, Lara Selles Vidal
 Maintainer: Rafael Ayala <rafael.ayala@oist.jp>
 Contact: Andrea Rodriguez-Martinez
         <andrea.rodriguez-martinez13@imperial.ac.uk>, Rafael Ayala
